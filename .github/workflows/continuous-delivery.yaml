@@ -1,0 +1,24 @@
+#this workflow is to deploy in all the environments
+name: web-app-release
+on:
+  push:
+    branches:
+      - main
+      - dev
+      - qual
+      - staging
+  workflow_dispatch:
+
+jobs:
+  cicd:
+    uses: subramanya-au/k8s-manifests/.github/workflows/webapp.yaml@main
+    with:
+      IMAGE_NAME: ${{ github.event.repository.name }}
+      repository: ${{ github.repository }}
+    secrets:
+      docker_username: ${{ secrets.DOCKER_USERNAME }}
+      docker_password: ${{ secrets.DOCKERHUB_TOKEN }}
+      github_pat: ${{ secrets.MY_PAT }}
+
+
+
